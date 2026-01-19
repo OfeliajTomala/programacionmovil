@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Programación Orientada a Objetos (POO)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <div class="container-interno">
+        <div class="container-page">
+
+            <!-- HEADER -->
+            <header class="internal-header">
+                <h1>PILARES DE LA PROGRAMACIÓN ORIENTADA A OBJECTOS</h1>
+            </header>
+
+            <!-- LOS 4 PILARES DE LA POO -->
+    <div class="content-page">
+        <h1>Los 4 Pilares de la POO</h1>
+        <hr>
+
+        
+
+        <!-- ENCAPSULAMIENTO -->
+        <section>
+            <h2>Encapsulamiento</h2>
+            <p>El encapsulamiento es el principio de ocultar los detalles internos de un objeto y exponer solo
+                lo
+                necesario
+                a través de una interfaz pública.</p>
+            <ul class="list">
+                <li>Protege los datos internos</li>
+                <li>Permite cambiar la implementación sin afectar a quien usa el objeto</li>
+                <li>Mejora la seguridad y mantenibilidad</li>
+            </ul>
+            <h3>Ejemplo en Kotlin:</h3>
+            <pre class="code-block"><code class="language-kotlin">class CuentaBancaria {
+    // Atributo privado (encapsulado)
+    private var saldo: Double = 0.0
+    
+    // Métodos públicos para interactuar con el saldo
+    fun depositar(cantidad: Double) {
+        if (cantidad > 0) {
+            saldo += cantidad
+            println("Depósito exitoso. Saldo actual: $saldo")
+        }
+    }
+    
+    fun retirar(cantidad: Double): Boolean {
+        if (cantidad > 0 && cantidad <= saldo) {
+            saldo -= cantidad
+            println("Retiro exitoso. Saldo actual: $saldo")
+            return true
+        }
+        println("Fondos insuficientes")
+        return false
+    }
+    
+    fun consultarSaldo(): Double {
+        return saldo
+    }
+}
+
+// Uso
+val miCuenta = CuentaBancaria()
+miCuenta.depositar(1000.0)
+// miCuenta.saldo = 5000  // ERROR: saldo es privado</code></pre>
+        </section>
+
+
+        <!-- HERENCIA -->
+        <section>
+            <h2>Herencia</h2>
+            <p>La herencia permite crear nuevas clases (hijas) basadas en clases existentes (padres),
+                reutilizando y
+                extendiendo su funcionalidad.</p>
+            <ul class="list">
+                <li>Reutilización de código</li>
+                <li>Jerarquía de clases</li>
+                <li>Extensibilidad del sistema</li>
+            </ul>
+
+            <h3>Ejemplo en Kotlin:</h3>
+            <pre class="code-block"><code class="language-kotlin">// Clase padre
+open class Vehiculo(val marca: String, val modelo: String) {
+    fun arrancar() {
+        println("El vehículo $marca $modelo ha arrancado")
+    }
+    
+    open fun detener() {
+        println("El vehículo se ha detenido")
+    }
+}
+
+// Clase hija que hereda de Vehiculo
+class Automovil(marca: String, modelo: String, val puertas: Int) 
+    : Vehiculo(marca, modelo) {
+    
+    fun abrirMaletero() {
+        println("Maletero abierto")
+    }
+    
+    override fun detener() {
+        println("El automóvil $marca $modelo se ha detenido con frenos ABS")
+    }
+}
+
+// Clase hija diferente
+class Motocicleta(marca: String, modelo: String, val cilindrada: Int) 
+    : Vehiculo(marca, modelo) {
+    
+    fun hacerCaballito() {
+        println("¡Caballito!")
+    }
+}
+
+// Uso
+val miAuto = Automovil("Toyota", "Corolla", 4)
+miAuto.arrancar()  // Método heredado
+miAuto.abrirMaletero()  // Método propio</code></pre>
+        </section>
+
+        <!-- POLIMORFISMO -->
+        <section>
+            <h2>3. Polimorfismo</h2>
+            <p>El polimorfismo permite que objetos de diferentes clases respondan al mismo mensaje (método) de
+                manera
+                diferente.</p>
+            <h3>Tipos de Polimorfismo</h3>
+            <ul class="list">
+                <li><strong>Polimorfismo de subtipo:</strong> Métodos con misma firma en clases
+                    diferentes</li>
+                <li><strong>Polimorfismo paramétrico:</strong> Genéricos</li>
+                <li><strong>Sobrecarga:</strong> Múltiples métodos con mismo nombre pero diferentes
+                    parámetros</li>
+            </ul>
+
+            <h3>Ejemplo en Kotlin:</h3>
+            <pre class="code-block"><code class="language-kotlin">// Clase base
+open class Animal(val nombre: String) {
+    open fun hacerSonido() {
+        println("El animal hace un sonido")
+    }
+}
+
+// Clases hijas con polimorfismo
+class Perro(nombre: String) : Animal(nombre) {
+    override fun hacerSonido() {
+        println("$nombre dice: ¡Guau guau!")
+    }
+}
+
+class Gato(nombre: String) : Animal(nombre) {
+    override fun hacerSonido() {
+        println("$nombre dice: ¡Miau miau!")
+    }
+}
+
+class Pajaro(nombre: String) : Animal(nombre) {
+    override fun hacerSonido() {
+        println("$nombre dice: ¡Pío pío!")
+    }
+}
+
+// Uso polimórfico
+val animales = listOf(
+    Perro("Rex"),
+    Gato("Mishi"),
+    Pajaro("Piolín"),
+    Animal("Genérico")
+)
+
+for (animal in animales) {
+    animal.hacerSonido()  // Cada animal responde diferente
+}</code></pre>
+
+        </section>
+
+        <!-- ABSTRACCIÓN -->
+        <section>
+            <h2>4. Abstracción</h2>
+            <p>La abstracción consiste en simplificar la realidad extrayendo solo las características esenciales
+                de un
+                objeto, ignorando los detalles irrelevantes. Se logra mediante:</p>
+            <ul class="list">
+                <li>Clases abstractas</li>
+                <li>Interfaces</li>
+                <li>Métodos abstractos</li>
+            </ul>
+            <h3>Ejemplo en Kotlin:</h3>
+            <pre class="code-block"><code class="language-kotlin">// Clase abstracta (no se puede instanciar directamente)
+abstract class Figura {
+    // Método abstracto (sin implementación)
+    abstract fun calcularArea(): Double
+    
+    // Método concreto (con implementación)
+    fun describir() {
+        println("Esta es una figura geométrica")
+    }
+}
+
+// Clases concretas que implementan la abstracción
+class Rectangulo(val base: Double, val altura: Double) : Figura() {
+    override fun calcularArea(): Double {
+        return base * altura
+    }
+}
+
+class Circulo(val radio: Double) : Figura() {
+    override fun calcularArea(): Double {
+        return Math.PI * radio * radio
+    }
+}
+
+// Uso
+val figuras = listOf(
+    Rectangulo(5.0, 3.0),
+    Circulo(2.0)
+)
+
+for (figura in figuras) {
+    println("Área: ${figura.calcularArea()}")
+    figura.describir()
+}</code></pre>
+        </section>
+    </div>
+    <div style="text-align: center;">
+        <a href="poo.html" class="btn-back">Atras</a>
+    </div>
+    </div>
+   
+    </div>
+</body>
+</html>

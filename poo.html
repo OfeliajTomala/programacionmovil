@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Programación Orientada a Objetos (POO)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <div class="container-interno">
+        <div class="container-page">
+
+            <!-- HEADER -->
+            <header class="internal-header">
+                <h1>PROGRAMACIÓN ORIENTADA A OBJETOS</h1>
+            </header>
+
+            <!-- INTRODUCCIÓN A POO -->
+            <div class="content-page">
+                <h1>¿Qué es la Programación Orientada a Objetos?</h1>
+                <hr>
+                <p>
+                    La Programación Orientada a Objetos (POO) es un paradigma de programación que organiza el
+                    software
+                    en torno a objetos, los cuales representan entidades del mundo real o conceptos del problema que
+                    se desea resolver.
+                </p><br>
+                <p>Un objeto combina:</p>
+                <ul class="list">
+                    <li><strong>Atributos:</strong> Características o propiedades del objeto (datos).</li>
+                    <li><strong>Métodos:</strong> Comportamientos o acciones que el objeto puede realizar
+                        (funciones).</li>
+                </ul>
+                <div class="contenedor-box">
+                    <p>
+                        <strong>Ejemplo:</strong><br>
+                        Un estudiante tiene nombre, edad y matrícula (atributos) y puede estudiar o rendir un examen
+                        (métodos).
+                    </p>
+                </div>
+
+                <h2>¿Por qué usar Programación Orientada a Objetos?</h2>
+                <p>La POO permite:</p>
+                <ul class="list">
+                    <li>Modelar problemas reales de forma más natural</li>
+                    <li>Reutilizar código</li>
+                    <li>Facilitar el mantenimiento</li>
+                    <li>Hacer programas más escalables y ordenados</li>
+                </ul>
+            </div>
+        </div><br>
+
+        <div class="container-page">
+            <div class="content-page">
+                <h1>Conceptos Fundamentales de la POO</h1>
+                <hr>
+
+                <h2>Clases</h2>
+                <p>Una <strong>clase</strong> es una plantilla o molde que define las características y
+                    comportamientos que tendrán los objetos creados a partir de ella.</p>
+
+                <h3>Estructura de una clase:</h3>
+                <p>Una clase típica incluye: nombre, atributos (variables) y métodos
+                    (funciones).
+                </p>
+                <h3>Ejemplo en Kotlin:</h3>
+                <pre class="code-block"><code class="language-kotlin">class Persona {
+    // Atributos (propiedades)
+    var nombre: String = ""
+    var edad: Int = 0
+    
+    // Métodos (comportamientos)
+    fun saludar() {
+        println("Hola, me llamo $nombre")
+    }
+    
+    fun cumplirAnios() {
+        edad++
+        println("¡Ahora tengo $edad años!")
+    }
+}</code></pre>
+
+                <h2>Objetos</h2>
+                <p>Un <strong>objeto</strong> es una instancia concreta de una clase. Si la clase es el plano,
+                    el objeto es la casa construida.</p>
+                <h3>Creación de objetos:</h3>
+                <p>Para crear un objeto, se instancia la clase usando el constructor.</p>
+                <p>Un constructor es un método especial que se ejecuta al crear un objeto. Se utiliza para inicializar
+                    sus atributos.</p>
+                <h3>Ejemplo:</h3>
+                <pre class="code-block"><code class="language-kotlin">// Crear objetos (instancias) de la clase Persona
+val persona1 = Persona()
+persona1.nombre = "Ana"
+persona1.edad = 25
+
+val persona2 = Persona()
+persona2.nombre = "Carlos"
+persona2.edad = 30
+
+// Usar los métodos del objeto
+persona1.saludar()  // Salida: "Hola, me llamo Ana"
+persona2.saludar()  // Salida: "Hola, me llamo Carlos"</code></pre>
+            </div>
+
+            <div class="tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Elemento</th>
+                            <th>Explicación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>class Persona</td>
+                            <td>Define el molde</td>
+                        </tr>
+                        <tr>
+                            <td>persona1</td>
+                            <td>Es un objeto</td>
+                        </tr>
+                        <tr>
+                            <td>nombre, edad</td>
+                            <td>Atributos</td>
+                        </tr>
+                        <tr>
+                            <td>saludar()</td>
+                            <td>Método</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div><br>
+
+            <div class="content-page">
+                <section>
+                    <h2>Encapsulamiento</h2>
+
+                    <h3>¿Qué es el encapsulamiento?</h3>
+                    <p>
+                        El <strong>encapsulamiento</strong> es el principio que consiste en
+                        <strong>ocultar los detalles internos</strong> de un objeto y permitir
+                        el acceso a sus datos únicamente a través de métodos controlados.
+                    </p>
+                    <p>
+                        Este principio protege el estado interno del objeto y evita
+                        modificaciones incorrectas desde el exterior.
+                    </p>
+
+                    <p>
+                        <strong>Idea clave:</strong> No todo debe ser accesible desde fuera de la clase.
+                    </p>
+
+                    <h3>Modificadores de acceso en Kotlin</h3>
+                    <ul class="list">
+                        <li><strong>public</strong> → accesible desde cualquier lugar (por defecto)</li>
+                        <li><strong>private</strong> → accesible solo dentro de la clase</li>
+                        <li><strong>protected</strong> → accesible en la clase y sus subclases</li>
+                        <li><strong>internal</strong> → accesible dentro del mismo módulo</li>
+                    </ul>
+
+                    <h3>Ejemplo en Kotlin:</h3>
+                    <pre class="code-block"><code class="language-kotlin">class CuentaBancaria(
+    private var saldo: Double
+) {
+
+    fun consultarSaldo(): Double {
+        return saldo
+    }
+
+    fun depositar(monto: Double) {
+        if (monto > 0) {
+            saldo += monto
+        }
+    }
+
+    fun retirar(monto: Double): Boolean {
+        if (monto <= saldo) {
+            saldo -= monto
+            return true
+        }
+        return false
+    }
+}</code></pre>
+                    <br>
+                    <p>
+                        En este ejemplo, el atributo <code>saldo</code> está protegido y solo puede
+                        modificarse mediante métodos que validan la operación.
+                    </p>
+                </section>
+
+                <!-- ================= ABSTRACCIÓN ================= -->
+                <section>
+                    <h2>Abstracción</h2>
+
+                    <h3>¿Qué es la abstracción?</h3>
+                    <p>
+                        La <strong>abstracción</strong> consiste en representar únicamente
+                        las características esenciales de un objeto, ocultando los detalles
+                        complejos de implementación.
+                    </p>
+                    <p>
+                        Se enfoca en <strong>qué hace</strong> un objeto y no en
+                        <strong>cómo lo hace</strong>.
+                    </p>
+
+                    <p><strong>Ejemplo del mundo real:</strong></p>
+                    <p>
+                        Al usar un cajero automático, solo interactúas con las opciones disponibles,
+                        sin conocer el funcionamiento interno del sistema bancario.
+                    </p>
+
+                    <h3>Clases abstractas</h3>
+                    <p>
+                        Una clase abstracta define un comportamiento general y
+                        <strong>no puede ser instanciada directamente</strong>.
+                        Sirve como base para otras clases.
+                    </p>
+
+                    <ul class="list">
+                        <li>Puede tener atributos</li>
+                        <li>Puede tener métodos abstractos</li>
+                        <li>Puede tener métodos con implementación</li>
+                    </ul>
+
+                    <h3>Ejemplo en Kotlin:</h3>
+                    <pre class="code-block"><code class="language-kotlin">abstract class Animal(val nombre: String) {
+
+    abstract fun hacerSonido()
+
+    fun dormir() {
+        println("$nombre está durmiendo")
+    }
+}
+
+class Perro(nombre: String) : Animal(nombre) {
+    override fun hacerSonido() {
+        println("$nombre dice: ¡Guau!")
+    }
+}
+
+class Gato(nombre: String) : Animal(nombre) {
+    override fun hacerSonido() {
+        println("$nombre dice: ¡Miau!")
+    }
+}
+
+val animales: List&lt;Animal&gt; = listOf(
+    Perro("Rex"),
+    Gato("Mishi")
+)
+
+for (animal in animales) {
+    animal.hacerSonido()
+    animal.dormir()
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Herencia</h2>
+
+                    <h3>¿Qué es la herencia?</h3>
+                    <p>
+                        La <strong>herencia</strong> permite que una clase adquiera atributos
+                        y métodos de otra clase existente.
+                    </p>
+                    <p>
+                        Representa una relación de tipo <strong>“es un”</strong>.
+                    </p>
+
+                    <h3>Ejemplo en Kotlin:</h3>
+                    <pre class="code-block"><code class="language-kotlin">open class Empleado(val nombre: String) {
+
+    fun trabajar() {
+        println("$nombre está trabajando")
+    }
+}
+
+class Programador(nombre: String) : Empleado(nombre) {
+
+    fun escribirCodigo() {
+        println("$nombre está programando en Kotlin")
+    }
+}</code></pre>
+                    <br>
+                    <p>
+                        En este caso, un <code>Programador</code> <strong>es un</strong> empleado
+                        y hereda su comportamiento.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Polimorfismo</h2>
+
+                    <h3>¿Qué es el polimorfismo?</h3>
+                    <p>
+                        El <strong>polimorfismo</strong> permite que un mismo método se comporte
+                        de diferentes maneras dependiendo del objeto que lo invoque.
+                    </p>
+                    <h3>Tipos de Polimorfismo</h3>
+                    <ul class="list">
+                        <li><strong>Polimorfismo de subtipo:</strong> Métodos con misma firma en clases
+                            diferentes</li>
+                        <li><strong>Polimorfismo paramétrico:</strong> Genéricos</li>
+                        <li><strong>Sobrecarga:</strong> Múltiples métodos con mismo nombre pero diferentes
+                            parámetros</li>
+                    </ul>
+
+
+                    <h3>Ejemplo en Kotlin:</h3>
+                    <pre class="code-block"><code class="language-kotlin">open class Empleado(val nombre: String) {
+    open fun calcularSalario(): Double {
+        return 0.0
+    }
+}
+
+class Programador(nombre: String) : Empleado(nombre) {
+    override fun calcularSalario(): Double {
+        return 1500.0
+    }
+}
+
+class Diseñador(nombre: String) : Empleado(nombre) {
+    override fun calcularSalario(): Double {
+        return 1200.0
+    }
+}
+
+val empleados: List&lt;Empleado&gt; = listOf(
+    Programador("Ana"),
+    Diseñador("Luis")
+)
+
+for (empleado in empleados) {
+    println("${empleado.nombre}: ${empleado.calcularSalario()}")
+}</code></pre>
+                </section>
+
+                <!-- ================= INTERFACES ================= -->
+                <section>
+                    <h2>Interfaces</h2>
+
+                    <h3>¿Qué es una interfaz?</h3>
+                    <p>
+                        Una <strong>interfaz</strong> define un conjunto de métodos que una clase
+                        se compromete a implementar.
+                    </p>
+                    <p>
+                        Representa capacidades o comportamientos que una clase puede tener.
+                    </p>
+
+                    <h3>Ejemplo en Kotlin:</h3>
+                    <pre class="code-block"><code class="language-kotlin">interface Volador {
+    fun volar()
+}
+
+interface Nadador {
+    fun nadar()
+}
+
+class Pato : Volador, Nadador {
+    override fun volar() {
+        println("El pato está volando")
+    }
+
+    override fun nadar() {
+        println("El pato está nadando")
+    }
+}</code></pre>
+<br>
+                    <h3>Diferencias clave</h3>
+                    <ul class="list">
+                        <li><strong>Clase abstracta</strong> → representa una entidad base</li>
+                        <li><strong>Interfaz</strong> → representa capacidades o roles</li>
+                        <li>Kotlin permite implementar múltiples interfaces</li>
+                    </ul>
+                </section>
+
+            </div>
+
+        </div><br>
+
+
+        <div class="container-page">
+
+        </div><br>
+
+
+
+        <div class="container-page">
+            <!-- MODELADO DE PROBLEMAS CON OBJETOS -->
+            <div class="content-page">
+                <h1>¿Cómo modelar problemas usando objetos?</h1>
+                <hr>
+
+                <p>El proceso de modelado orientado a objetos sigue estos pasos:</p>
+
+                <div class="examples-grid">
+                    <div class="card">
+                        <h3>1. Identificar Objetos</h3>
+                        <p>Busca sustantivos en la descripción del problema. Cada sustantivo importante puede ser un
+                            objeto.</p>
+                        <p><strong>Ejemplo:</strong> En un sistema de una Biblioteca: Usuario,Libro,Prestamo.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>2. Definir Atributos</h3>
+                        <p>Para cada objeto, identifica sus características (adjetivos).</p>
+                        <p><strong>Ejemplo:</strong> <br>
+                            • Libro: Título, Autor, ISBN, Año de publicación, Disponibilidad <br>
+                            •Usuario: Nombre, ID, Correo electrónico, Teléfono, Fecha de registro</p>
+                    </div>
+                </div>
+
+                <div class="examples-grid">
+
+                    <div class="card">
+                        <h3>3. Identificar Comportamientos</h3>
+                        <p>Busca verbos asociados a cada objeto (qué puede hacer).</p>
+                        <p><strong>Ejemplo:</strong> <br>
+                            • Usuario: tomarPrestado(), devolver()<br>
+                            • Libro: prestar(), marcarComoDisponible()<br>
+                            • Biblioteca: registrarUsuario(), buscarLibro()</p>
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>4. Establecer Relaciones</h3>
+                        <p>Determina cómo se relacionan los objetos entre sí.</p>
+                        <p><strong>Ejemplo:</strong><br>
+                            • Un Usuario <em>tiene</em> Préstamos<br>
+                            • Un Préstamo <em>contiene</em> un Libro<br>
+                            • La Biblioteca <em>gestiona</em> Libros y Usuarios</p>
+                    </div>
+                </div><br>
+
+                <h3>Ejemplo Completo: Sistema de Biblioteca</h3>
+                <pre class="code-block"><code class="language-kotlin">
+class Libro(val titulo: String, val autor: String, val ISBN: String) {
+    var disponible: Boolean = true
+    
+    fun prestar(): Boolean {
+        if (disponible) {
+            disponible = false
+            return true
+        }
+        return false
+    }
+    
+    fun devolver() {
+        disponible = true
+    }
+}
+
+class Usuario(val nombre: String, val id: String) {
+    val librosPrestados = mutableListOf<Libro>()
+    
+    fun tomarPrestado(libro: Libro): Boolean {
+        if (libro.prestar()) {
+            librosPrestados.add(libro)
+            return true
+        }
+        return false
+    }
+}
+
+// Crear interacciones entre objetos
+val libro1 = Libro("Cien años de soledad", "G. Márquez", "123-456")
+val usuario1 = Usuario("Ana García", "U001")
+
+if (usuario1.tomarPrestado(libro1)) {
+    println("Préstamo exitoso")
+}
+</pre></code>
+
+            </div>
+        </div><br>
+
+        <div class="container-page">
+            <!-- EJERCICIOS PRÁCTICOS -->
+            <div class="content-page">
+                <h1>Ejercicio Prácticos</h1>
+                <hr>
+                <h2>Sistema de Empleados</h2>
+                <p><strong>Problema:</strong> Modela un sistema de nómina para diferentes tipos de empleados en una
+                    empresa.
+                </p>
+
+                <h3>Requisitos:</h3>
+                <ul class="list">
+                    <li>Clase base Empleado con atributos comunes (nombre, id, salarioBase)</li>
+                    <li>Clases hijas para diferentes tipos: EmpleadoTiempoCompleto, EmpleadoPorHoras, Gerente</li>
+                    <li>Cada tipo calcula su salario de manera diferente</li>
+                    <li>Implementar un método polimórfico calcularSalario()</li>
+                    <li>Agregar un bono especial para Gerente</li>
+                </ul>
+
+                <h3>Solución:</h3>
+                <pre class="code-block"><code class="language-kotlin">// Clase base (Abstracción)
+open class Empleado(val nombre: String, val id: String, protected val salarioBase: Double) {
+    // Método que será sobrescrito (Polimorfismo)
+    open fun calcularSalario(): Double {
+        return salarioBase
+    }
+    
+    fun mostrarInformacion() {
+        println("$nombre (ID: $id) - Salario: $${calcularSalario()}")
+    }
+}
+
+// Empleado de tiempo completo (Herencia)
+class EmpleadoTiempoCompleto(nombre: String, id: String, salarioBase: Double) 
+    : Empleado(nombre, id, salarioBase) {
+    
+    override fun calcularSalario(): Double {
+        return salarioBase  // Salario fijo mensual
+    }
+}
+
+// Empleado por horas (Herencia)
+class EmpleadoPorHoras(nombre: String, id: String, val horasTrabajadas: Double, 
+                       val tarifaPorHora: Double) : Empleado(nombre, id, 0.0) {
+    
+    override fun calcularSalario(): Double {
+        return horasTrabajadas * tarifaPorHora
+    }
+}
+
+// Gerente (Herencia con funcionalidad adicional)
+class Gerente(nombre: String, id: String, salarioBase: Double, 
+              val bono: Double) : Empleado(nombre, id, salarioBase) {
+    
+    override fun calcularSalario(): Double {
+        return salarioBase + bono
+    }
+    
+    fun dirigirReunion() {
+        println("$nombre está dirigiendo una reunión")
+    }
+}
+
+// Sistema principal
+fun main() {
+    val empleados = listOf(
+        EmpleadoTiempoCompleto("Ana López", "E001", 2500.0),
+        EmpleadoPorHoras("Carlos Ruiz", "E002", 160.0, 15.0),
+        Gerente("María García", "G001", 4000.0, 1000.0)
+    )
+    
+    println("=== NÓMINA DE EMPLEADOS ===")
+    // Polimorfismo: cada empleado calcula su salario de manera diferente
+    for (empleado in empleados) {
+        empleado.mostrarInformacion()
+    }
+    
+    // Uso específico de Gerente
+    val gerente = empleados[2] as Gerente
+    gerente.dirigirReunion()
+}</code></pre>
+
+            </div>
+        </div><br>
+        <!-- BENEFICIOS Y APLICACIONES -->
+        <div class="container-page">
+            <div class="content-page">
+                <h1>Beneficios y Aplicaciones de la POO</h1>
+                <hr>
+
+                <div class="examples-grid">
+                    <div class="card">
+                        <h3>Beneficios</h3>
+                        <ul style="text-align:left; padding-left:20px;">
+                            <li><strong>Reutilización de código:</strong> Las clases se pueden usar múltiples veces
+                            </li>
+                            <li><strong>Mantenibilidad:</strong> Fácil de modificar y extender</li>
+                            <li><strong>Modularidad:</strong> Cada objeto es independiente</li>
+                            <li><strong>Seguridad:</strong> Encapsulamiento protege los datos</li>
+                            <li><strong>Flexibilidad:</strong> Polimorfismo permite adaptabilidad</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3>Aplicaciones Reales</h3>
+                        <ul style="text-align:left; padding-left:20px;">
+                            <li><strong>Interfaces Gráficas:</strong> Botones, ventanas, menús como objetos</li>
+                            <li><strong>Videojuegos:</strong> Personajes, objetos, escenarios</li>
+                            <li><strong>Sistemas Bancarios:</strong> Cuentas, clientes, transacciones</li>
+                            <li><strong>Redes Sociales:</strong> Usuarios, publicaciones, mensajes</li>
+                            <li><strong>Aplicaciones Móviles:</strong> Pantallas, componentes UI</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><br>
+
+        <div class="container-page">
+            <!-- VIDEO -->
+            <div class="content-page">
+                <h1>Video Explicativo</h1>
+                <hr>
+                <p>
+                    En el siguiente video se explica la teoría de POO y el desarrollo de los ejercicios prácticos
+                    paso a
+                    paso.
+                </p>
+                <div class="contenedor-degradado">
+                    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+                        <iframe src="https://drive.google.com/file/d/1dktIxmjw1ss_uG_W2mO88ZufYRQTbBPI/preview"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+                            allow="autoplay; encrypted-media" allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <a href="index.html" class="btn-back">← Volver al inicio</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
