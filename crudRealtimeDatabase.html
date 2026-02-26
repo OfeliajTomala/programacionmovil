@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deber 3 - CRUD Realtime Database</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        .crud-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        .crud-tab {
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-c { background: #DCFCE7; color: #166534; }
+        .tab-r { background: #DBEAFE; color: #1e40af; }
+        .tab-u { background: #FEF3C7; color: #92400E; }
+        .tab-d { background: #FEE2E2; color: #991B1B; }
+        .tab-c:hover { background: var(--success); color: white; }
+        .tab-r:hover { background: var(--primary); color: white; }
+        .tab-u:hover { background: var(--accent); color: var(--primary-dark); }
+        .tab-d:hover { background: #EF4444; color: white; }
+
+        .crud-resumen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .crud-resumen-item {
+            border-radius: 14px;
+            padding: 22px 18px;
+            text-align: center;
+        }
+        .crud-c { background: #DCFCE7; border-bottom: 4px solid var(--success); }
+        .crud-r { background: #DBEAFE; border-bottom: 4px solid var(--primary); }
+        .crud-u { background: #FEF3C7; border-bottom: 4px solid var(--accent); }
+        .crud-d { background: #FEE2E2; border-bottom: 4px solid #EF4444; }
+        .crud-resumen-item .crud-letra {
+            font-size: 2rem;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .crud-c .crud-letra { color: #166534; }
+        .crud-r .crud-letra { color: #1e40af; }
+        .crud-u .crud-letra { color: #92400E; }
+        .crud-d .crud-letra { color: #991B1B; }
+        .crud-resumen-item h4 { font-size: 0.95rem; margin-bottom: 4px; color: var(--text-principal); }
+        .crud-resumen-item p { font-size: 0.82rem; color: var(--text-secondary); margin: 0; }
+
+        .json-tree {
+            background: #0f285d;
+            border-radius: 12px;
+            padding: 20px 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: #E5E7EB;
+        }
+        .json-key   { color: #93C5FD; }
+        .json-str   { color: #FCD34D; }
+        .json-num   { color: #6EE7B7; }
+        .json-bool  { color: #F87171; }
+        .json-brace { color: #E5E7EB; }
+
+        .ventaja-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: var(--background-tarjetas);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .ventaja-item .v-icon { font-size: 1.6rem; flex-shrink: 0; }
+        .ventaja-item p { margin: 0; font-size: 0.9rem; color: var(--text-secondary); }
+        .ventaja-item strong { color: var(--text-principal); }
+    </style>
+</head>
+<body>
+
+<div class="container-interno">
+    <div class="container-page">
+
+        <header class="internal-header">
+            <h1>DEBER 3: CRUD CON REALTIME DATABASE</h1>
+        </header>
+
+        <div class="content-page">
+            <h1>¿Qué es Firebase Realtime Database?</h1>
+            <hr>
+            <p><strong>Firebase Realtime Database</strong> es una base de datos NoSQL alojada en la nube que sincroniza datos en tiempo real entre todos los dispositivos conectados. Los datos se almacenan en formato <strong>JSON</strong> y cualquier cambio se propaga instantáneamente.</p>
+
+            <div class="ventaja-item">
+                <div class="v-icon">☁️</div>
+                <p><strong>Basado en la nube:</strong> Los datos viven en los servidores de Google, sin necesidad de mantener infraestructura propia.</p>
+            </div>
+            <div class="ventaja-item">
+                <div class="v-icon">⚡</div>
+                <p><strong>Tiempo real:</strong> Cada cambio en la base de datos se refleja al instante en todos los dispositivos que escuchan.</p>
+            </div>
+            <div class="ventaja-item">
+                <div class="v-icon">📴</div>
+                <p><strong>Soporte offline:</strong> La app puede leer y escribir datos sin internet. Se sincroniza automáticamente al reconectarse.</p>
+            </div>
+            <div class="ventaja-item">
+                <div class="v-icon">🌳</div>
+                <p><strong>Estructura en árbol JSON:</strong> Los datos se organizan en nodos jerárquicos, similares a carpetas y archivos.</p>
+            </div>
+        </div>
+
+    </div><br>
+
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Estructura de datos en Firebase</h1>
+            <hr>
+            <p>Los datos se guardan en formato JSON anidado. Ejemplo de estructura para una lista de productos:</p>
+
+            <div class="json-tree">
+<span class="json-brace">{</span>
+  <span class="json-key">"productos"</span><span class="json-brace">: {</span>
+    <span class="json-key">"-NxK1a2b3c4d"</span><span class="json-brace">: {</span>
+      <span class="json-key">"nombre"</span><span class="json-brace">:</span> <span class="json-str">"Laptop Lenovo"</span><span class="json-brace">,</span>
+      <span class="json-key">"precio"</span><span class="json-brace">:</span> <span class="json-num">850.00</span><span class="json-brace">,</span>
+      <span class="json-key">"stock"</span><span class="json-brace">:</span>  <span class="json-num">5</span>
+    <span class="json-brace">},</span>
+    <span class="json-key">"-NxK5e6f7g8h"</span><span class="json-brace">: {</span>
+      <span class="json-key">"nombre"</span><span class="json-brace">:</span> <span class="json-str">"Mouse Inalámbrico"</span><span class="json-brace">,</span>
+      <span class="json-key">"precio"</span><span class="json-brace">:</span> <span class="json-num">25.00</span><span class="json-brace">,</span>
+      <span class="json-key">"stock"</span><span class="json-brace">:</span>  <span class="json-num">20</span>
+    <span class="json-brace">}</span>
+  <span class="json-brace">}</span>
+<span class="json-brace">}</span>
+            </div>
+
+            <div class="contenedor-box contenedor-item" style="margin-top: 20px;">
+                <p>Cada registro tiene una <strong>clave única autogenerada</strong> (como <code>-NxK1a2b3c4d</code>) producida por <code>push().key</code>. Esto evita colisiones cuando múltiples usuarios escriben al mismo tiempo.</p>
+            </div>
+        </div>
+    </div><br>
+
+    <!-- CREATE -->
+    <div class="container-page">
+        <div class="content-page">
+            <h1>➕ CREATE — Crear un registro</h1>
+            <hr>
+            <p>Para crear un nuevo registro se usa <code>push().key</code> que genera un ID único, luego se escribe el objeto con <code>setValue()</code>:</p>
+            <pre class="code-block"><code class="language-kotlin">// Modelo de datos
+data class Producto(
+    val id: String = "",
+    val nombre: String = "",
+    val precio: Double = 0.0,
+    val stock: Int = 0
+)
+
+// Referencia a la base de datos
+val database = FirebaseDatabase.getInstance()
+val ref = database.getReference("productos")
+
+fun crearProducto(nombre: String, precio: Double, stock: Int) {
+    val id = ref.push().key ?: return  // genera ID único
+    val producto = Producto(id, nombre, precio, stock)
+
+    ref.child(id).setValue(producto)
+        .addOnSuccessListener {
+            Toast.makeText(this, "✓ Producto creado", Toast.LENGTH_SHORT).show()
+        }
+        .addOnFailureListener { e ->
+            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+}</code></pre>
+        </div>
+    </div><br>
+
+    <!-- READ -->
+    <div class="container-page">
+        <div class="content-page">
+            <h1>📋 READ — Leer registros en tiempo real</h1>
+            <hr>
+            <p>Se usa <code>addValueEventListener()</code> para escuchar cambios en tiempo real. Cada vez que un dato cambia en la nube, el listener se ejecuta automáticamente:</p>
+            <pre class="code-block"><code class="language-kotlin">fun leerProductos() {
+    ref.addValueEventListener(object : ValueEventListener {
+
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val lista = mutableListOf&lt;Producto&gt;()
+
+            for (item in snapshot.children) {
+                val producto = item.getValue(Producto::class.java)
+                producto?.let { lista.add(it) }
+            }
+
+            // Actualizar el RecyclerView
+            adapter.actualizarLista(lista)
+            Toast.makeText(this@MainActivity,
+                "${lista.size} productos cargados", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Toast.makeText(this@MainActivity,
+                "Error al leer: ${error.message}", Toast.LENGTH_LONG).show()
+        }
+    })
+}</code></pre>
+        </div>
+    </div><br>
+
+    <!-- UPDATE -->
+    <div class="container-page">
+        <div class="content-page">
+            <h1>✏️ UPDATE — Actualizar un registro</h1>
+            <hr>
+            <p>Se usa <code>updateChildren()</code> para modificar solo los campos necesarios sin sobrescribir el registro completo:</p>
+            <pre class="code-block"><code class="language-kotlin">fun actualizarProducto(id: String, nuevoPrecio: Double, nuevoStock: Int) {
+    val cambios = mapOf(
+        "precio" to nuevoPrecio,
+        "stock"  to nuevoStock
+    )
+
+    ref.child(id).updateChildren(cambios)
+        .addOnSuccessListener {
+            Toast.makeText(this, "✓ Producto actualizado", Toast.LENGTH_SHORT).show()
+        }
+        .addOnFailureListener { e ->
+            Toast.makeText(this, "Error al actualizar: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+}</code></pre>
+        </div>
+    </div><br>
+
+    <!-- DELETE -->
+    <div class="container-page">
+        <div class="content-page">
+            <h1>🗑️ DELETE — Eliminar un registro</h1>
+            <hr>
+            <p>Se usa <code>removeValue()</code> sobre el nodo del registro a eliminar, identificado por su ID único:</p>
+            <pre class="code-block"><code class="language-kotlin">fun eliminarProducto(id: String) {
+    ref.child(id).removeValue()
+        .addOnSuccessListener {
+            Toast.makeText(this, "✓ Producto eliminado", Toast.LENGTH_SHORT).show()
+        }
+        .addOnFailureListener { e ->
+            Toast.makeText(this, "Error al eliminar: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+}</code></pre>
+
+            <h2>Resumen del CRUD</h2>
+            <div class="crud-resumen-grid">
+                <div class="crud-resumen-item crud-c">
+                    <span class="crud-letra">C</span>
+                    <h4>CREATE</h4>
+                    <p>push().key + setValue()</p>
+                </div>
+                <div class="crud-resumen-item crud-r">
+                    <span class="crud-letra">R</span>
+                    <h4>READ</h4>
+                    <p>addValueEventListener()</p>
+                </div>
+                <div class="crud-resumen-item crud-u">
+                    <span class="crud-letra">U</span>
+                    <h4>UPDATE</h4>
+                    <p>updateChildren()</p>
+                </div>
+                <div class="crud-resumen-item crud-d">
+                    <span class="crud-letra">D</span>
+                    <h4>DELETE</h4>
+                    <p>removeValue()</p>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top: 10px;">
+                <a href="index.html" class="btn-back">← Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 PROGRAMACIÓN MÓVIL.</p>
+</footer>
+
+<script>hljs.highlightAll();</script>
+</body>
+</html>

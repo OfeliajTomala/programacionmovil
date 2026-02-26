@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deber 2 - Autenticación Firebase</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        .proveedor-card {
+            background: var(--background);
+            border-radius: 16px;
+            padding: 28px 24px;
+            text-align: center;
+            border-top: 6px solid var(--primary);
+            box-shadow: 0 3px 12px rgba(0,0,0,0.09);
+            transition: transform 0.3s, border-top-color 0.3s;
+        }
+        .proveedor-card:hover {
+            transform: translateY(-6px);
+            border-top-color: var(--accent);
+        }
+        .proveedor-card .prov-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 14px;
+        }
+        .proveedor-card h3 {
+            color: var(--text-principal);
+            margin-bottom: 8px;
+        }
+        .proveedor-card p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            margin: 0;
+        }
+
+        .flujo-auth {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 20px 0;
+        }
+        .flujo-auth-step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: var(--background-tarjetas);
+            border-left: 5px solid var(--primary);
+            border-radius: 10px;
+            margin-bottom: 4px;
+        }
+        .flujo-auth-step .step-num {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .flujo-auth-step p { margin: 0; font-size: 0.9rem; color: var(--text-secondary); }
+        .flujo-auth-step strong { color: var(--text-principal); }
+
+        .acceso-badge {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            margin-right: 8px;
+        }
+        .badge-pub  { background: #DCFCE7; color: #166534; }
+        .badge-priv { background: #FEE2E2; color: #991B1B; }
+        .badge-prot { background: #FEF3C7; color: #92400E; }
+        .badge-int  { background: #EDE9FE; color: #5B21B6; }
+    </style>
+</head>
+<body>
+
+<div class="container-interno">
+    <div class="container-page">
+
+        <header class="internal-header">
+            <h1>DEBER 2: AUTENTICACIÓN EMAIL/PASSWORD Y GOOGLE</h1>
+        </header>
+
+        <div class="content-page">
+            <h1>¿Qué es Firebase Authentication?</h1>
+            <hr>
+            <p><strong>Firebase Authentication</strong> es un servicio de Google que permite autenticar usuarios de forma segura sin necesidad de construir un backend propio. Gestiona contraseñas cifradas, tokens de sesión y soporta múltiples proveedores de identidad.</p>
+
+            <div class="contenedor-box contenedor-item" style="margin-top: 20px;">
+                <p><strong>Ventaja principal:</strong> No necesitas manejar contraseñas manualmente. Firebase cifra, protege y gestiona las credenciales de los usuarios de forma segura y automática.</p>
+            </div>
+
+            <h2>Proveedores Disponibles</h2>
+            <div class="examples-grid" style="margin-top: 16px;">
+                <div class="proveedor-card">
+                    <span class="prov-icon">📧</span>
+                    <h3>Email / Password</h3>
+                    <p>El usuario registra su correo y contraseña. Firebase cifra y almacena las credenciales.</p>
+                </div>
+                <div class="proveedor-card">
+                    <span class="prov-icon">🔵</span>
+                    <h3>Google Sign-In</h3>
+                    <p>El usuario inicia sesión con su cuenta de Google. Se obtiene un token que Firebase verifica.</p>
+                </div>
+                <div class="proveedor-card">
+                    <span class="prov-icon">📘</span>
+                    <h3>Facebook</h3>
+                    <p>Autenticación mediante cuenta de Facebook. Requiere configuración en Meta Developers.</p>
+                </div>
+                <div class="proveedor-card">
+                    <span class="prov-icon">📱</span>
+                    <h3>Teléfono (SMS)</h3>
+                    <p>Verificación mediante código OTP enviado por SMS al número del usuario.</p>
+                </div>
+            </div>
+        </div>
+
+    </div><br>
+
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Flujo de Autenticación</h1>
+            <hr>
+            <p>Este es el proceso que sigue la app al autenticar un usuario:</p>
+            <div class="flujo-auth">
+                <div class="flujo-auth-step">
+                    <div class="step-num">1</div>
+                    <p><strong>El usuario ingresa sus credenciales</strong> — correo/contraseña o presiona "Iniciar con Google".</p>
+                </div>
+                <div class="flujo-auth-step">
+                    <div class="step-num">2</div>
+                    <p><strong>La app envía las credenciales a Firebase</strong> mediante el SDK de Authentication.</p>
+                </div>
+                <div class="flujo-auth-step">
+                    <div class="step-num">3</div>
+                    <p><strong>Firebase verifica las credenciales</strong> contra su base de datos segura.</p>
+                </div>
+                <div class="flujo-auth-step">
+                    <div class="step-num">4</div>
+                    <p><strong>Firebase retorna un token de sesión</strong> (FirebaseUser) si las credenciales son correctas.</p>
+                </div>
+                <div class="flujo-auth-step">
+                    <div class="step-num">5</div>
+                    <p><strong>La app recibe el FirebaseUser</strong> con nombre, email, UID y foto del usuario autenticado.</p>
+                </div>
+                <div class="flujo-auth-step">
+                    <div class="step-num">6</div>
+                    <p><strong>Se redirige al usuario</strong> a la pantalla principal de la aplicación.</p>
+                </div>
+            </div>
+        </div>
+    </div><br>
+
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Configuración del Proyecto</h1>
+            <hr>
+            <h3>Dependencias en build.gradle (app)</h3>
+            <pre class="code-block"><code class="language-kotlin">// Firebase Authentication
+implementation("com.google.firebase:firebase-auth-ktx")
+
+// Google Sign-In
+implementation("com.google.android.gms:play-services-auth:20.7.0")</code></pre>
+
+            <h3>Inicializar FirebaseAuth</h3>
+            <pre class="code-block"><code class="language-kotlin">// En la Activity
+private val auth = FirebaseAuth.getInstance()</code></pre>
+        </div>
+    </div><br>
+
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Autenticación con Email / Password</h1>
+            <hr>
+
+            <h3>Registro de nuevo usuario</h3>
+            <pre class="code-block"><code class="language-kotlin">fun registrar(email: String, password: String) {
+    auth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(this, "Registro exitoso ✓", Toast.LENGTH_SHORT).show()
+                // Redirigir a la pantalla principal
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+}</code></pre>
+
+            <h3>Inicio de sesión</h3>
+            <pre class="code-block"><code class="language-kotlin">fun iniciarSesion(email: String, password: String) {
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                Toast.makeText(this, "Bienvenido ${user?.email}", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_LONG).show()
+            }
+        }
+}
+
+// Cerrar sesión
+fun cerrarSesion() {
+    auth.signOut()
+    startActivity(Intent(this, LoginActivity::class.java))
+    finish()
+}</code></pre>
+        </div>
+    </div><br>
+
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Autenticación con Google Sign-In</h1>
+            <hr>
+
+            <h3>Configurar GoogleSignInOptions</h3>
+            <pre class="code-block"><code class="language-kotlin">// En onCreate()
+val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    .requestIdToken(getString(R.string.default_web_client_id))
+    .requestEmail()
+    .build()
+
+googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+// Lanzar el intent de selección de cuenta
+fun iniciarConGoogle() {
+    val signInIntent = googleSignInClient.signInIntent
+    startActivityForResult(signInIntent, RC_SIGN_IN)
+}</code></pre>
+
+            <h3>Recibir el resultado y autenticar en Firebase</h3>
+            <pre class="code-block"><code class="language-kotlin">override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (requestCode == RC_SIGN_IN) {
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        try {
+            val account = task.getResult(ApiException::class.java)!!
+            firebaseAuthConGoogle(account.idToken!!)
+        } catch (e: ApiException) {
+            Toast.makeText(this, "Error Google Sign-In: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+}
+
+private fun firebaseAuthConGoogle(idToken: String) {
+    val credential = GoogleAuthProvider.getCredential(idToken, null)
+    auth.signInWithCredential(credential)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                Toast.makeText(this, "Bienvenido ${user?.displayName}", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+        }
+}</code></pre>
+        </div>
+    </div><br>
+
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Obtener el Usuario Actual</h1>
+            <hr>
+            <pre class="code-block"><code class="language-kotlin">val user = FirebaseAuth.getInstance().currentUser
+
+if (user != null) {
+    val uid          = user.uid           // ID único del usuario
+    val nombre       = user.displayName   // Nombre completo
+    val email        = user.email         // Correo electrónico
+    val fotoUrl      = user.photoUrl      // URL de la foto de perfil
+    val verificado   = user.isEmailVerified // ¿Correo verificado?
+} else {
+    // No hay sesión activa → redirigir al Login
+    startActivity(Intent(this, LoginActivity::class.java))
+    finish()
+}</code></pre>
+
+            <h2>Modificadores de Acceso en Kotlin</h2>
+            <ul class="list">
+                <li><span class="acceso-badge badge-pub">public</span> Accesible desde cualquier lugar. Es el valor por defecto.</li>
+                <li><span class="acceso-badge badge-priv">private</span> Solo accesible dentro de la clase donde se declara.</li>
+                <li><span class="acceso-badge badge-prot">protected</span> Accesible en la clase y en sus subclases (herencia).</li>
+                <li><span class="acceso-badge badge-int">internal</span> Accesible dentro del mismo módulo del proyecto.</li>
+            </ul>
+
+            <div style="text-align:center;">
+                <a href="index.html" class="btn-back">← Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 PROGRAMACIÓN MÓVIL.</p>
+</footer>
+
+<script>hljs.highlightAll();</script>
+</body>
+</html>

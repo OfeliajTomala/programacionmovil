@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deber 4 - CRUD con Room</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        .room-componente {
+            background: var(--background);
+            border-radius: 16px;
+            padding: 28px 24px;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.09);
+            text-align: center;
+            border-top: 6px solid var(--primary);
+            transition: transform 0.3s, border-top-color 0.3s;
+        }
+        .room-componente:hover {
+            transform: translateY(-5px);
+            border-top-color: var(--accent);
+        }
+        .room-componente .rc-icon {
+            font-size: 2.8rem;
+            display: block;
+            margin-bottom: 14px;
+        }
+        .room-componente .rc-anotacion {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            font-weight: 800;
+            font-size: 0.82rem;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+        .room-componente h3 {
+            color: var(--text-principal);
+            margin-bottom: 8px;
+        }
+        .room-componente p {
+            color: var(--text-secondary);
+            font-size: 0.87rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .arquitectura-room {
+            background: var(--background-tarjetas);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border-soft);
+            margin-top: 20px;
+        }
+        .room-layer {
+            background: var(--background);
+            border-left: 6px solid var(--primary);
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .room-layer:last-child { border-left-color: var(--success); margin-bottom: 0; }
+        .room-layer .rl-icon { font-size: 1.8rem; flex-shrink: 0; }
+        .room-layer h4 { color: var(--text-principal); font-size: 0.97rem; margin-bottom: 3px; }
+        .room-layer p { color: var(--text-secondary); font-size: 0.84rem; margin: 0; }
+        .room-arrow { text-align: center; font-size: 1.3rem; color: var(--primary); margin: 2px 0; }
+
+        .comparacion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+        .comp-item {
+            background: var(--background-tarjetas);
+            border-radius: 12px;
+            padding: 18px 16px;
+            border-left: 5px solid var(--primary);
+        }
+        .comp-item h4 { color: var(--primary); font-size: 0.88rem; margin-bottom: 6px; font-family: 'Courier New', monospace; }
+        .comp-item p  { color: var(--text-secondary); font-size: 0.84rem; margin: 0; }
+    </style>
+</head>
+<body>
+
+<div class="container-interno">
+    <div class="container-page">
+
+        <header class="internal-header">
+            <h1>DEBER 4: CRUD CON ROOM DATABASE</h1>
+        </header>
+
+        <div class="content-page">
+            <h1>¿Qué es Room?</h1>
+            <hr>
+            <p><strong>Room</strong> es una biblioteca de Android Jetpack que proporciona una capa de abstracción sobre <strong>SQLite</strong>. Permite trabajar con bases de datos locales usando anotaciones de Kotlin, verificando las consultas SQL en tiempo de compilación para evitar errores en tiempo de ejecución.</p>
+
+            <div class="contenedor-box contenedor-item" style="margin-top: 20px;">
+                <p><strong>¿Cuándo usar Room vs Firebase?</strong> Usa <strong>Room</strong> para datos locales que no necesitan sincronizarse con la nube (preferencias, historial, datos offline). Usa <strong>Firebase</strong> cuando necesitas que los datos se compartan entre dispositivos en tiempo real.</p>
+            </div>
+
+            <h2>Los 3 componentes principales de Room</h2>
+            <div class="examples-grid" style="margin-top: 16px;">
+                <div class="room-componente">
+                    <span class="rc-icon">📋</span>
+                    <div class="rc-anotacion">@Entity</div>
+                    <h3>Entidad</h3>
+                    <p>Define la tabla de la base de datos. Cada clase anotada con @Entity se convierte en una tabla en SQLite.</p>
+                </div>
+                <div class="room-componente">
+                    <span class="rc-icon">🔧</span>
+                    <div class="rc-anotacion">@Dao</div>
+                    <h3>Data Access Object</h3>
+                    <p>Define las operaciones CRUD mediante anotaciones. Room genera el código SQL automáticamente.</p>
+                </div>
+                <div class="room-componente">
+                    <span class="rc-icon">🗄️</span>
+                    <div class="rc-anotacion">@Database</div>
+                    <h3>Base de Datos</h3>
+                    <p>Punto de entrada principal. Conecta las entidades con los DAOs y crea la instancia de la BD.</p>
+                </div>
+            </div>
+        </div>
+
+    </div><br>
+
+    <!-- ARQUITECTURA -->
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Arquitectura de Room</h1>
+            <hr>
+            <p>Así fluyen los datos en una app que usa Room:</p>
+
+            <div class="arquitectura-room">
+                <div class="room-layer">
+                    <div class="rl-icon">📱</div>
+                    <div><h4>Activity / Fragment (UI)</h4><p>Llama al DAO para insertar, leer, actualizar o eliminar datos.</p></div>
+                </div>
+                <div class="room-arrow">↕</div>
+                <div class="room-layer">
+                    <div class="rl-icon">🔧</div>
+                    <div><h4>DAO (Data Access Object)</h4><p>Interfaz con las operaciones CRUD anotadas. Room genera el código real.</p></div>
+                </div>
+                <div class="room-arrow">↕</div>
+                <div class="room-layer">
+                    <div class="rl-icon">🗄️</div>
+                    <div><h4>Room Database</h4><p>Capa de abstracción que gestiona la conexión con SQLite.</p></div>
+                </div>
+                <div class="room-arrow">↕</div>
+                <div class="room-layer">
+                    <div class="rl-icon">💾</div>
+                    <div><h4>SQLite (almacenamiento físico)</h4><p>Archivo .db guardado localmente en el dispositivo Android.</p></div>
+                </div>
+            </div>
+        </div>
+    </div><br>
+
+    <!-- @ENTITY -->
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Paso 1: Definir la Entidad (@Entity)</h1>
+            <hr>
+            <p>La clase anotada con <code>@Entity</code> define la estructura de la tabla. Cada propiedad es una columna:</p>
+            <pre class="code-block"><code class="language-kotlin">@Entity(tableName = "productos")
+data class Producto(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,                          // Clave primaria, autoincremental
+
+    @ColumnInfo(name = "nombre")
+    val nombre: String,                        // Columna "nombre"
+
+    @ColumnInfo(name = "precio")
+    val precio: Double,                        // Columna "precio"
+
+    @ColumnInfo(name = "stock")
+    val stock: Int,                            // Columna "stock"
+
+    @ColumnInfo(name = "descripcion")
+    val descripcion: String = ""               // Columna con valor por defecto
+)</code></pre>
+
+            <div class="comparacion-grid">
+                <div class="comp-item">
+                    <h4>@Entity</h4>
+                    <p>Define la tabla. El parámetro <code>tableName</code> establece el nombre en SQLite.</p>
+                </div>
+                <div class="comp-item">
+                    <h4>@PrimaryKey</h4>
+                    <p>Marca la clave primaria. Con <code>autoGenerate = true</code> incrementa sola.</p>
+                </div>
+                <div class="comp-item">
+                    <h4>@ColumnInfo</h4>
+                    <p>Personaliza el nombre de la columna en la base de datos.</p>
+                </div>
+            </div>
+        </div>
+    </div><br>
+
+    <!-- @DAO -->
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Paso 2: Crear el DAO (@Dao)</h1>
+            <hr>
+            <p>El <strong>DAO</strong> es una interfaz donde definimos todas las operaciones sobre la tabla. Room genera automáticamente el código SQL:</p>
+            <pre class="code-block"><code class="language-kotlin">@Dao
+interface ProductoDao {
+
+    // CREATE — insertar un producto
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertar(producto: Producto)
+
+    // READ — obtener todos los productos, ordenados por nombre
+    @Query("SELECT * FROM productos ORDER BY nombre ASC")
+    fun obtenerTodos(): Flow&lt;List&lt;Producto&gt;&gt;
+
+    // READ — obtener un producto por ID
+    @Query("SELECT * FROM productos WHERE id = :id LIMIT 1")
+    suspend fun obtenerPorId(id: Int): Producto?
+
+    // UPDATE — actualizar un producto existente
+    @Update
+    suspend fun actualizar(producto: Producto)
+
+    // DELETE — eliminar un producto
+    @Delete
+    suspend fun eliminar(producto: Producto)
+
+    // DELETE — eliminar todos los registros
+    @Query("DELETE FROM productos")
+    suspend fun eliminarTodos()
+
+    // SEARCH — buscar por nombre
+    @Query("SELECT * FROM productos WHERE nombre LIKE '%' || :query || '%'")
+    fun buscar(query: String): Flow&lt;List&lt;Producto&gt;&gt;
+}</code></pre>
+
+            <div class="contenedor-box contenedor-item" style="margin-top: 16px;">
+                <p><strong>¿Qué es Flow?</strong> Es un tipo de Kotlin Coroutines que emite valores múltiples de forma asíncrona. Cuando usamos <code>Flow</code> en un DAO, la UI se actualiza automáticamente cada vez que la base de datos cambia.</p>
+            </div>
+        </div>
+    </div><br>
+
+    <!-- @DATABASE -->
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Paso 3: Crear la Base de Datos (@Database)</h1>
+            <hr>
+            <p>La clase <code>@Database</code> es el punto de entrada de Room. Se implementa como <strong>Singleton</strong> para evitar múltiples instancias:</p>
+            <pre class="code-block"><code class="language-kotlin">@Database(
+    entities = [Producto::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
+
+    // Referencia al DAO
+    abstract fun productoDao(): ProductoDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getInstance(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "papeleria_database"     // Nombre del archivo .db
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+}</code></pre>
+        </div>
+    </div><br>
+
+    <!-- USO EN ACTIVITY -->
+    <div class="container-page">
+        <div class="content-page">
+            <h1>Paso 4: Usar Room en la Activity</h1>
+            <hr>
+            <p>Desde la Activity usamos <code>lifecycleScope</code> para ejecutar operaciones de la base de datos en coroutines (no en el hilo principal):</p>
+            <pre class="code-block"><code class="language-kotlin">class MainActivity : AppCompatActivity() {
+
+    private lateinit var dao: ProductoDao
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Obtener el DAO
+        dao = AppDatabase.getInstance(this).productoDao()
+
+        // READ — observar cambios en tiempo real con Flow
+        lifecycleScope.launch {
+            dao.obtenerTodos().collect { lista ->
+                adapter.actualizarLista(lista)
+            }
+        }
+    }
+
+    // CREATE
+    fun insertarProducto(nombre: String, precio: Double, stock: Int) {
+        lifecycleScope.launch {
+            dao.insertar(Producto(nombre = nombre, precio = precio, stock = stock))
+            Toast.makeText(this@MainActivity, "✓ Producto agregado", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // UPDATE
+    fun actualizarProducto(producto: Producto) {
+        lifecycleScope.launch {
+            dao.actualizar(producto)
+            Toast.makeText(this@MainActivity, "✓ Producto actualizado", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // DELETE
+    fun eliminarProducto(producto: Producto) {
+        lifecycleScope.launch {
+            dao.eliminar(producto)
+            Toast.makeText(this@MainActivity, "✓ Producto eliminado", Toast.LENGTH_SHORT).show()
+        }
+    }
+}</code></pre>
+
+            <h2>Resumen de anotaciones</h2>
+            <div class="comparacion-grid">
+                <div class="comp-item"><h4>@Entity</h4><p>Define la tabla y sus columnas</p></div>
+                <div class="comp-item"><h4>@PrimaryKey</h4><p>Clave primaria de la tabla</p></div>
+                <div class="comp-item"><h4>@Dao</h4><p>Interfaz con las operaciones CRUD</p></div>
+                <div class="comp-item"><h4>@Insert / @Update / @Delete</h4><p>Operaciones automáticas</p></div>
+                <div class="comp-item"><h4>@Query</h4><p>Consultas SQL personalizadas</p></div>
+                <div class="comp-item"><h4>@Database</h4><p>Punto de entrada, gestiona la BD</p></div>
+                <div class="comp-item"><h4>Flow</h4><p>Actualiza la UI automáticamente</p></div>
+                <div class="comp-item"><h4>suspend</h4><p>Ejecuta en hilo secundario (coroutine)</p></div>
+            </div>
+
+            <div style="text-align:center; margin-top: 10px;">
+                <a href="index.html" class="btn-back">← Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 PROGRAMACIÓN MÓVIL.</p>
+</footer>
+
+<script>hljs.highlightAll();</script>
+</body>
+</html>
