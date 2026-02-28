@@ -6,29 +6,65 @@
     <title>Lección 2 - Proyecto Integrador Teórico</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .soon-wrapper {
-            max-width: 600px;
-            margin: 80px auto;
-            padding: 60px 40px;
-            text-align: center;
-            background: var(--background);
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        .leccion-wrapper {
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 0 20px 30px;
         }
-        .soon-icon { font-size: 4rem; margin-bottom: 20px; }
-        .soon-title { font-size: 1.8rem; font-weight: 800; color: var(--text-principal); margin-bottom: 14px; }
-        .soon-desc { color: var(--text-secondary); font-size: 1rem; line-height: 1.8; margin-bottom: 24px; }
-        .soon-badge {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
+        .leccion-hero {
+            background: var(--background);
+            border-radius: 16px;
+            padding: 28px 32px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-align: left;
+        }
+        .leccion-hero .hero-icon { font-size: 3rem; flex-shrink: 0; }
+        .leccion-hero h1 { font-size: 1.4rem; font-weight: 800; color: var(--text-principal); margin-bottom: 6px; }
+        .leccion-hero p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin: 0; }
+        .doc-card {
+            background: var(--background);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border-top: 6px solid var(--primary);
+        }
+        .doc-card .doc-titulo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .doc-card .doc-titulo span { font-size: 1.6rem; }
+        .doc-card .doc-titulo h2 { font-size: 1.05rem; color: var(--text-principal); margin: 0; }
+        .doc-card .doc-desc-label {
+            font-size: 0.75rem;
             font-weight: 700;
-            font-size: 0.82rem;
-            padding: 6px 20px;
-            border-radius: 20px;
+            color: var(--primary);
             letter-spacing: 1px;
             text-transform: uppercase;
+            margin-bottom: 6px;
         }
+        .doc-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 14px; }
+        .doc-card a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+            margin-bottom: 16px;
+        }
+        .doc-card a:hover { background: var(--primary-dark); }
     </style>
 </head>
 <body>
@@ -39,14 +75,33 @@
             <h1>LECCIÓN 2</h1>
         </header>
 
-        <div class="soon-wrapper">
-            <div class="soon-icon">📝</div>
-            <div class="soon-title">Lección 2: Elaboración del Proyecto Integrador Teórico</div>
-            <div class="soon-desc">Documentación y planificación del proyecto final.</div>
-            <div class="soon-badge">Próximamente</div>
+        <div class="leccion-wrapper">
+
+            <div class="leccion-hero">
+                <div class="hero-icon">📝</div>
+                <div>
+                    <h1>Lección 2: Proyecto Integrador Teórico</h1>
+                    <p>Documentación y planificación del proyecto final.</p>
+                </div>
+            </div>
+
+            <div class="doc-card">
+                <div class="doc-titulo">
+                    <span>📄</span>
+                    <h2>Documento del Proyecto</h2>
+                </div>
+                <div class="doc-desc-label">📋 Descripción:</div>
+                <p>Documentación teórica completa del proyecto integrador, incluyendo análisis, diseño y planificación de la aplicación móvil desarrollada.</p>
+                <a href="https://docs.google.com/document/d/10qp_orO4QyMFMRzLC5IFeUZ89NEyiKCC" target="_blank">📄 Proyecto Integrador Teórico</a>
+                <iframe src="https://docs.google.com/document/d/10qp_orO4QyMFMRzLC5IFeUZ89NEyiKCC/preview"
+                    style="width:100%; height:700px; border:0; border-radius:10px; display:block;"
+                    allow="autoplay">
+                </iframe>
+            </div>
+
         </div>
 
-        <div style="text-align:center; padding-bottom: 40px;">
+        <div style="text-align:center; padding-bottom: 24px;">
             <a href="index.html" class="btn-back">← Volver al inicio</a>
         </div>
     </div>
